@@ -1,0 +1,16 @@
+# Local state and provider cache
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+
+# Variable files with secrets
+terraform.tfvars
+*.auto.tfvars
+
+# Plans / CLI config
+*.tfplan
+.terraformrc
+terraform.rc
