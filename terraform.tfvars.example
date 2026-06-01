@@ -3,6 +3,10 @@
 # Globally unique S3 bucket name for the frontend (README used atf-frontend-ew2).
 frontend_bucket_name = "atf-frontend-ew2"
 
+# Globally unique S3 bucket name for the trained model (backend pulls it on boot).
+model_bucket_name = "atf-model-ew2"
+# enable_model_bucket = true   # set false to manage the model yourself (manual scp)
+
 project     = "atf"
 environment = "prod"
 region      = "eu-west-2"

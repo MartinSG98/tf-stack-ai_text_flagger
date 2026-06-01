@@ -21,6 +21,18 @@ variable "frontend_bucket_name" {
   type        = string
 }
 
+variable "enable_model_bucket" {
+  description = "Create a model S3 bucket; the backend auto-pulls the model from it on boot."
+  type        = bool
+  default     = true
+}
+
+variable "model_bucket_name" {
+  description = "Globally unique S3 bucket name for the trained model. Required when enable_model_bucket is true."
+  type        = string
+  default     = ""
+}
+
 variable "ssh_public_key" {
   description = "SSH public key for the EC2 key pair. Empty = no key pair (use SSM)."
   type        = string

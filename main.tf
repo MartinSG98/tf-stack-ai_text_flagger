@@ -2,15 +2,14 @@
 #
 # The module lives in its OWN repo and is consumed from a PINNED version (git
 # tag), so deployments are reproducible and upgrades are explicit. Tag the
-# module repo (`git tag v1.0.0 && git push --tags`) and bump ?ref= to roll
+# module repo (`git tag vX.Y.Z && git push --tags`) and bump ?ref= to roll
 # forward.
 #
-# TODO: replace the URL below with your actual module repo.
 # For local development with both folders side by side, temporarily switch to:
 #   source = "../module"
 
 module "ai_text_flagger" {
-  source = "git::https://github.com/MartinSG98/tf-module-ai_text_flagger.git?ref=v1.0.0"
+  source = "git::https://github.com/MartinSG98/tf-module-ai_text_flagger.git?ref=v1.1.0"
 
   providers = {
     aws           = aws
@@ -22,6 +21,10 @@ module "ai_text_flagger" {
   region      = var.region
 
   frontend_bucket_name = var.frontend_bucket_name
+
+  # Model delivery: backend auto-pulls the model from S3 on boot.
+  enable_model_bucket = var.enable_model_bucket
+  model_bucket_name   = var.model_bucket_name
 
   instance_type     = var.instance_type
   ssh_public_key    = var.ssh_public_key

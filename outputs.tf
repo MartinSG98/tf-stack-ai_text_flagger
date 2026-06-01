@@ -18,6 +18,11 @@ output "frontend_bucket" {
   value       = module.ai_text_flagger.frontend_bucket
 }
 
+output "model_bucket" {
+  description = "Model S3 bucket name — upload the trained model here."
+  value       = module.ai_text_flagger.model_bucket
+}
+
 output "backend_public_ip" {
   description = "Public IP of the backend EC2 instance."
   value       = module.ai_text_flagger.backend_public_ip

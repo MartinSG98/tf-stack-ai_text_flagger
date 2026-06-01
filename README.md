@@ -37,6 +37,8 @@ here is only for the CI/CD deploy workflow, not for running Terraform.
 | Variable                | Notes |
 |-------------------------|-------|
 | `frontend_bucket_name`  | Globally unique S3 name (README used `atf-frontend-ew2`). |
+| `model_bucket_name`     | Globally unique S3 name for the model (backend pulls it on boot). |
+| `enable_model_bucket`   | Create the model bucket + auto-pull (default `true`). |
 | `region`                | Primary region, default `eu-west-2`. |
 | `instance_type`         | Backend EC2 size, default `m7i-flex.large`. |
 | `ssh_public_key`        | Optional — creates an EC2 key pair. Empty = SSM-only access. |
@@ -113,16 +115,18 @@ jobs:
 
 ## After `apply`
 
-### 1. Upload the trained model
+### 1. Upload the trained model (once)
 
-Not in git, not provisioned by Terraform:
+The model is too large for git. With `enable_model_bucket = true`, upload it to
+the model bucket; the backend syncs it from there on boot:
 
 ```bash
-IP=$(terraform output -raw backend_public_ip)
-scp -i atf-backend-key.pem -r output/model/final/* \
-    ubuntu@$IP:/home/ubuntu/ai_text_flagger/output/model/final/
-ssh ubuntu@$IP "sudo systemctl restart atf"
+aws s3 sync output/model/final/ "s3://$(terraform output -raw model_bucket)/model/final/"
 ```
+
+A fresh/replaced instance auto-pulls it via its IAM role — no scp needed. If you
+upload after the instance is already running, restart the service to pick it up
+(e.g. via SSM Session Manager): `sudo systemctl restart atf`.
 
 Also create `/home/ubuntu/ai_text_flagger/.env` with `API_KEY=...` (read by the
 systemd unit via `EnvironmentFile`).
