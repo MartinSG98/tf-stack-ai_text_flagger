@@ -1,0 +1,32 @@
+# Copy to terraform.tfvars and fill in. terraform.tfvars is gitignored.
+
+# Globally unique S3 bucket name for the frontend (README used atf-frontend-ew2).
+frontend_bucket_name = "atf-frontend-ew2"
+
+project     = "atf"
+environment = "prod"
+region      = "eu-west-2"
+
+instance_type = "m7i-flex.large"
+
+# Allow SSH only from your IP. Leave empty to disable SSH entirely (use SSM).
+# ssh_ingress_cidrs = ["203.0.113.4/32"]
+
+# Paste your SSH public key to create an EC2 key pair. Empty = no key pair.
+# ssh_public_key = "ssh-ed25519 AAAA... you@host"
+
+enable_waf = true
+
+# ---- GitHub Actions OIDC (no static keys) ----
+# The repo whose workflow deploys the frontend.
+github_repository = "MartinSG98/ai_text_flagger_ui"
+
+# Set false if this AWS account already has a GitHub OIDC provider, and pass its ARN:
+# create_github_oidc_provider = false
+# github_oidc_provider_arn    = "arn:aws:iam::123456789012:oidc-provider/token.actions.githubusercontent.com"
+
+# To allow more than just the main branch (e.g. a GitHub Environment), set explicitly:
+# github_oidc_subjects = [
+#   "repo:MartinSG98/ai_text_flagger_ui:ref:refs/heads/main",
+#   "repo:MartinSG98/ai_text_flagger_ui:environment:production",
+# ]
